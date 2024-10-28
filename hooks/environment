@@ -1,7 +1,8 @@
 #!/bin/bash
 
-echo "Hello from my plugin!!!!"
 result=$(source diff-filter-impl)
 NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
 TRIGGER_VAR="BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_${NAME}"
+echo $TRIGGER_VAR
 export declare $TRIGGER_VAR=$result
+echo ${!TRIGGER_VAR}
