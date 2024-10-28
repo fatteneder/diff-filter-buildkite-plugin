@@ -1,8 +1,9 @@
 #!/bin/bash
 
-result=$(source diff-filter-impl)
+RESULT=$(source diff-filter-impl)
 NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
 TRIGGER_VAR="BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_${NAME}"
 echo $TRIGGER_VAR
-export declare $TRIGGER_VAR=$result
+echo $RESULT
+export declare $TRIGGER_VAR=$RESULT
 echo ${!TRIGGER_VAR}
