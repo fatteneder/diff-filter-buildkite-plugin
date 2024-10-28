@@ -1,0 +1,13 @@
+name: Diff Filter
+description: Filter build steps based on file diff.
+author: https://github.com/fatteneder
+requirements: []
+configuration:
+  properties:
+    name:
+      type: string
+    match:
+      type: array
+    ignore:
+      type: array
+  additionalProperties: false
