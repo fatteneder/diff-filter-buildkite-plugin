@@ -1,5 +1,6 @@
 #!/bin/bash
 
 result=$(source diff-filter-impl)
+NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
 TRIGGER_VAR="BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_${NAME}"
 export declare $TRIGGER_VAR=$result
