@@ -2,9 +2,12 @@
 
 set -ueo pipefail
 
-HOOKS_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+echo "$(pwd)"
+# HOOKS_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+HOOKS_DIR="$( dirname "${BASH_SOURCE[0]}" )"
+# echo "$(pwd)"
 
-RESULT=$(source "$HOOKS_DIR/diff-filter-impl")
+RESULT=$("$HOOKS_DIR/diff-filter-impl")
 NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
 TRIGGER_VAR="BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_${NAME}"
 echo $TRIGGER_VAR
