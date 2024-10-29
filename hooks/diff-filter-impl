@@ -36,7 +36,7 @@ MODIFIED_FILES=( $(git diff-tree --diff-filter=d --name-only -r "${COMPARE_AGAIN
 
 echo "Found ${#MODIFIED_FILES[@]} modified files between ${CURR_HEAD} and ${COMPARE_AGAINST}" >&2
 if [[ ! -z "${MODIFIED_FILES[@]}" ]]; then
-    printf '\- %s\n' "${MODIFIED_FILES[@]}" >&2
+    printf "\055 %s\n" "${MODIFIED_FILES[@]}" >&2
 fi
 
 # For each match pattern we've been given, check if any of the modified files matches
@@ -78,13 +78,14 @@ done
 # Emit trigger variable
 declare RESULT
 if [[ ! -z "${FILTERED_FILES[@]}" ]]; then
-    echo "" >&2
     echo "${#FILTERED_FILES[@]} files remaining after applying diff-filter" >&2
-    printf '\- %s\n' "${FILTERED_FILES[@]}" >&2
+    printf "\055 %s\n" "${FILTERED_FILES[@]}" >&2
     RESULT=1
 else
-    echo "" >&2
     echo "No files remaining after applying diff-filter" >&2
     RESULT=0
 fi
+TRIGGER_VAR="BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_${NAME}"
+echo "${TRIGGER_VAR}=${RESULT}" >&2
+
 echo $RESULT
