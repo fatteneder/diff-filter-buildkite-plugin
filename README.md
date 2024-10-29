@@ -1,6 +1,6 @@
-# diff filter Buildkite plugin
+# Diff Filter Buildkite Plugin
 
-Filter build steps based on file diff.
+Filter build steps based on file diffs.
 
 ## Example
 
@@ -9,11 +9,11 @@ Add the following to your `pipeline.yml`:
 ```yml
 steps:
   - plugins:
-      - fatteneder/diff-filter#v1.0:
+      - https://github.com/fatteneder/diff-filter-buildkite-plugin#main:
         name: docs
         match:
           - "docs/*"
-      - fatteneder/diff-filter#v1.0:
+      - https://github.com/fatteneder/diff-filter-buildkite-plugin#main:
         name: build
         match:
           - "*"
