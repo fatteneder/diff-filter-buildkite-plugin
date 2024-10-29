@@ -8,13 +8,8 @@ set -eu
 shopt -s extglob
 shopt -s globstar
 
-# Log to stderr to not interfer with return values
-log() {
-    echo "$1" >&2
-}
-
 NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
-log "--- Scanning files for ${NAME} diff-filter"
+echo "--- Scanning files for ${NAME} diff-filter" >&2
 
 # If we're a pull request, we look at the diff between the current branch tip and the base branch
 if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
@@ -39,7 +34,7 @@ fi
 CURR_HEAD="$(git rev-parse HEAD)"
 MODIFIED_FILES=( $(git diff-tree --diff-filter=d --name-only -r "${COMPARE_AGAINST}" HEAD) )
 
-log "Found ${#MODIFIED_FILES[@]} modified files between ${CURR_HEAD} and ${COMPARE_AGAINST}"
+echo "Found ${#MODIFIED_FILES[@]} modified files between ${CURR_HEAD} and ${COMPARE_AGAINST}" >&2
 if [[ ! -z "${MODIFIED_FILES[@]}" ]]; then
     printf '\- %s\n' "${MODIFIED_FILES[@]}"
 fi
@@ -83,13 +78,11 @@ done
 # Emit trigger variable
 declare RESULT
 if [[ ! -z "${FILTERED_FILES[@]}" ]]; then
-    log ""
-    log "${#FILTERED_FILES[@]} files remaining after applying diff-filter"
-    printf '\- %s\n' "${FILTERED_FILES[@]}"
+    echo "\n${#FILTERED_FILES[@]} files remaining after applying diff-filter" >&2
+    printf '\- %s\n' "${FILTERED_FILES[@]}" >&2
     RESULT=1
 else
-    log ""
-    log "No files remaining after applying diff-filter"
+    echo "\nNo files remaining after applying diff-filter" >&2
     RESULT=0
 fi
 echo $RESULT
