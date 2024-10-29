@@ -1,15 +1,14 @@
 #!/bin/bash
 
 # Based on https://github.com/staticfloat/forerunner-buildkite-plugin,
-# also see https://github.com/JuliaCI/julia-buildkite/issues/243
+# also see https://github.com/JuliaCI/julia-buildkite/issues/243.
 
 # Initialize the features we need
 set -eu
 shopt -s extglob
 shopt -s globstar
 
-# logger to stdout without interfering with return values
-# from https://stackoverflow.com/a/18581814
+# Log to stderr to not interfer with return values
 log() {
     echo "$1" >&2
 }

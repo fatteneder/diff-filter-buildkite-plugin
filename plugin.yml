@@ -11,25 +11,3 @@ configuration:
     ignore:
       type: array
   additionalProperties: false
-
-# steps:
-#   - label: launch jobs
-#     plugins:
-#       - fatteneder/diff-filter#v1:
-#         name: docs
-#         match:
-#           - "doc/**"
-#         ignore:
-#       - fatteneder/diff-filter#v1:
-#         name: build
-#         match:
-#         ignore:
-#           - "doc/**"
-#           - "README.md"
-#     commands: |
-#       if [[ $${BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_DOCS} == 1 ]]; then
-#           echo "buildkite-agent upload docs.yml"
-#       fi
-#       if [[ $${BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_BUILD} == 1 ]]; then
-#           echo "buildkite-agent upload build.yml"
-#       fi

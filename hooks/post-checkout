@@ -2,18 +2,14 @@
 
 set -ueo pipefail
 
-HOOKS_DIR="$( dirname "${BASH_SOURCE[0]}" )"
+# change to source dir
 cd "$BUILDKITE_BUILD_CHECKOUT_PATH"
 
+# call diff-filter
+HOOKS_DIR="$( dirname "${BASH_SOURCE[0]}" )"
 RESULT=$("$HOOKS_DIR/diff-filter-impl")
+
+# export the trigger variable
 NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
-echo "Hello"
-echo $NAME
 TRIGGER_VAR="BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_${NAME}"
-echo "World"
-echo $TRIGGER_VAR
-echo "Sers"
-echo $RESULT
 declare -x $TRIGGER_VAR=$RESULT
-echo "Oida"
-echo ${!TRIGGER_VAR}
