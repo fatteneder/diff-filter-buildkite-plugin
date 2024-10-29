@@ -14,6 +14,6 @@ echo "World"
 echo $TRIGGER_VAR
 echo "Sers"
 echo $RESULT
-declare -x $TRIGGER_VAR=${RESULT[-1]}
+declare -x $TRIGGER_VAR=$RESULT
 echo "Oida"
 echo ${!TRIGGER_VAR}
