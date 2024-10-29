@@ -40,6 +40,9 @@ CURR_HEAD="$(git rev-parse HEAD)"
 MODIFIED_FILES=( $(git diff-tree --diff-filter=d --name-only -r "${COMPARE_AGAINST}" HEAD) )
 
 log "Found ${#MODIFIED_FILES[@]} modified files between ${CURR_HEAD} and ${COMPARE_AGAINST}"
+if [[ ! -z "${MODIFIED_FILES[@]}" ]]; then
+    printf '\- %s\n' "${MODIFIED_FILES[@]}"
+fi
 
 # For each match pattern we've been given, check if any of the modified files matches
 MATCH_IDX=0
@@ -80,10 +83,13 @@ done
 # Emit trigger variable
 declare RESULT
 if [[ ! -z "${FILTERED_FILES[@]}" ]]; then
-    log "These files matched the ${NAME} diff-filter: ${FILTERED_FILES[@]}"
+    log ""
+    log "${#FILTERED_FILES[@]} files remaining after applying diff-filter"
+    printf '\- %s\n' "${FILTERED_FILES[@]}"
     RESULT=1
 else
-    log "Found no files that match the ${NAME} diff-filter"
+    log ""
+    log "No files remaining after applying diff-filter"
     RESULT=0
 fi
 echo $RESULT
