@@ -3,9 +3,11 @@
 set -ueo pipefail
 
 echo "$(pwd)"
-# HOOKS_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 HOOKS_DIR="$( dirname "${BASH_SOURCE[0]}" )"
-# echo "$(pwd)"
+echo "$HOOKS_DIR"
+echo "$BUILDKITE_BUILD_CHECKOUT_PATH"
+cd "$BUILDKITE_BUILD_CHECKOUT_PATH"
+echo "$(pwd)"
 
 RESULT=$("$HOOKS_DIR/diff-filter-impl")
 NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
