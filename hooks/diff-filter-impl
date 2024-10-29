@@ -8,8 +8,15 @@ set -eu
 shopt -s extglob
 shopt -s globstar
 
+# logger to stdout without interfering with return values
+# from https://stackoverflow.com/a/18581814
+exec 3>&1
+log() {
+    echo "$1" 1>&3
+}
+
 NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
-echo "--- Scanning files for diffs for the ${NAME} diff-filter"
+log "--- Scanning files for diffs for the ${NAME} diff-filter"
 
 # If we're a pull request, we look at the diff between the current branch tip and the base branch
 if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
@@ -34,7 +41,7 @@ fi
 CURR_HEAD="$(git rev-parse HEAD)"
 MODIFIED_FILES=( $(git diff-tree --diff-filter=d --name-only -r "${COMPARE_AGAINST}" HEAD) )
 
-echo "Found ${#MODIFIED_FILES[@]} modified files between ${CURR_HEAD} and ${COMPARE_AGAINST}"
+log "Found ${#MODIFIED_FILES[@]} modified files between ${CURR_HEAD} and ${COMPARE_AGAINST}"
 
 # For each match pattern we've been given, check if any of the modified files matches
 MATCH_IDX=0
@@ -73,10 +80,12 @@ for FILE in "${MATCHED_FILES[@]}"; do
 done
 
 # Emit trigger variable
+declare RESULT
 if [[ ! -z "${FILTERED_FILES[@]}" ]]; then
-    echo "These files matched the ${NAME} diff-filter: ${FILTERED_FILES[@]}"
-    echo 1
+    log "These files matched the ${NAME} diff-filter: ${FILTERED_FILES[@]}"
+    RESULT=1
 else
-    echo "Found no files that match the ${NAME} diff-filter"
-    echo 0
+    log "Found no files that match the ${NAME} diff-filter"
+    RESULT=0
 fi
+echo $RESULT
