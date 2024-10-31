@@ -9,11 +9,11 @@ Add the following to your `pipeline.yml`:
 ```yml
 steps:
   - plugins:
-      - https://github.com/fatteneder/diff-filter-buildkite-plugin#main:
+      - fatteneder/diff-filter#v1.0.0:
         name: docs
         match:
           - "docs/*"
-      - https://github.com/fatteneder/diff-filter-buildkite-plugin#main:
+      - fatteneder/diff-filter#v1.0.0:
         name: build
         match:
           - "*"
