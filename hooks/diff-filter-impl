@@ -11,16 +11,25 @@ shopt -s globstar
 NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
 echo "--- Scanning files for ${NAME} diff-filter" >&2
 
-# If we're a pull request, we look at the diff between the current branch tip and the base branch
-if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
-    if [[ ! -v "BUILDKITE_PLUGIN_DIFF_FILTER_GIT_FETCHED" ]]; then
+TARGET_BRANCH="${BUILDKITE_PLUGIN_DIFF_FILTER_TARGET_BRANCH}"
+if [[ ! -z "${TARGET_BRANCH}" ]]; then
+    # compare against provided target branch
+    if [[ ! -v "BUILDKITE_PLUGIN_DIFF_FILTER_GIT_FETCHED_1" ]]; then
+        git fetch --force origin "${TARGET_BRANCH}"
+        # Ensure that if this plugin is run multiple times, we don't try to fetch every time
+        export BUILDKITE_PLUGIN_DIFF_FILTER_GIT_FETCHED_1=1
+    fi
+    COMPARE_AGAINST="$(git merge-base remotes/origin/${TARGET_BRANCH} HEAD)"
+elif [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
+    # If we're a pull request, we look at the diff between the current branch tip and the base branch
+    if [[ ! -v "BUILDKITE_PLUGIN_DIFF_FILTER_GIT_FETCHED_2" ]]; then
         # The `--force` flags are necessary to be able to deal with rewritten
         # history on the remotes' end when reusing a repository
         git fetch --force origin "${BUILDKITE_PULL_REQUEST_BASE_BRANCH}"
         git fetch --force origin "refs/pull/${BUILDKITE_PULL_REQUEST}/head:refs/remotes/origin/pr/${BUILDKITE_PULL_REQUEST}"
 
         # Ensure that if this plugin is run multiple times, we don't try to fetch every time
-        export BUILDKITE_PLUGIN_DIFF_FILTER_GIT_FETCHED=1
+        export BUILDKITE_PLUGIN_DIFF_FILTER_GIT_FETCHED_2=1
     fi
     TARGET_BRANCH="remotes/origin/${BUILDKITE_PULL_REQUEST_BASE_BRANCH}"
     COMPARE_AGAINST="$(git merge-base ${TARGET_BRANCH} HEAD)"
@@ -30,7 +39,6 @@ else
 fi
 
 # Get list of modified files (excluding deletes), store in `MODIFIED_FILES`
-# TODO Why ignore deleted?
 CURR_HEAD="$(git rev-parse HEAD)"
 MODIFIED_FILES=( $(git diff-tree --diff-filter=d --name-only -r "${COMPARE_AGAINST}" HEAD) )
 

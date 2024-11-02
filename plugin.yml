@@ -10,4 +10,6 @@ configuration:
       type: array
     ignore:
       type: array
+    target_branch:
+      type: string
   additionalProperties: false
