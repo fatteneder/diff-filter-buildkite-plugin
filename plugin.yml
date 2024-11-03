@@ -1,7 +1,7 @@
 name: Diff Filter
 description: Filter build steps based on file diff.
 author: https://github.com/fatteneder
-requirements: []
+requirements: [git]
 configuration:
   properties:
     name:
