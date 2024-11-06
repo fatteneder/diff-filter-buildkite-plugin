@@ -1,5 +1,5 @@
 name: Diff Filter
-description: Filter build steps based on file diff.
+description: Filter build steps based on git file diff.
 author: https://github.com/fatteneder
 requirements: [git]
 configuration:

@@ -11,5 +11,5 @@ RESULT=$("$HOOKS_DIR/diff-filter-impl")
 
 # export the trigger variable
 NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
-TRIGGER_VAR="BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_${NAME}"
+TRIGGER_VAR="${NAME}"
 declare -x $TRIGGER_VAR=$RESULT

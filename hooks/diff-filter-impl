@@ -6,9 +6,8 @@
 # Initialize the features we need
 set -eu
 shopt -s extglob
-shopt -s globstar
 
-NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME^^}" # ^^ for uppercase
+NAME="${BUILDKITE_PLUGIN_DIFF_FILTER_NAME}"
 echo "--- Scanning files for ${NAME} diff-filter" >&2
 
 TARGET_BRANCH="${BUILDKITE_PLUGIN_DIFF_FILTER_TARGET_BRANCH}"
@@ -93,7 +92,6 @@ else
     echo "No files remaining after applying diff-filter" >&2
     RESULT=0
 fi
-TRIGGER_VAR="BUILDKITE_PLUGIN_DIFF_FILTER_TRIGGERED_${NAME}"
-echo "${TRIGGER_VAR}=${RESULT}" >&2
+echo "${NAME}=${RESULT}" >&2
 
 echo $RESULT
