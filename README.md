@@ -35,6 +35,9 @@ steps:
   then the environment variable `name` is exported with the value `1`, otherwise it is `0`.
 - `ignore`: A list of glob patterns. Filenames that match a pattern in this list are ignored
   in the `git diff`.
+- `target_branch`: (optional) The branch name against the diff is computed. If this is an empty string, then
+  compare against the merge-base if the plugin runs on a PR branch,
+  or against the previous commit otherwise. Default is `target_branch=""`.
 
 
 ## Development
